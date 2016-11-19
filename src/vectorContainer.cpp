@@ -43,6 +43,9 @@ void vectorContainer :: parse()
 {
     if (input == "")
         return;
+//	if(input.begin() == '(' && input.end() == ')'){
+//		input = input.substr(input.begin() + 1, input.end() - 1);
+//		}
     int count = 0;
     while(input[count] == ' '){
         count++;
@@ -52,7 +55,7 @@ void vectorContainer :: parse()
         connectorList.push_back(new connector("#"));
         return;
     }
-
+	int parenCounter = 0;
     for (unsigned i = 0; i < input.size(); i++ ) 
     {
         if (input[i] == ';'){
@@ -71,6 +74,16 @@ void vectorContainer :: parse()
             connectorList.push_back(new connector("||"));
             i++;
         }
+	else if (input[i] == '(')
+	{
+		connectorList.push_back(new connector("("));
+		parenCounter++;
+	}
+	else if (input[i] == ')')
+	{
+		connectorList.push_back(new connector(")"));
+		parenCounter--;
+	}
 	else if (input[i] == '[')
 	{
 		for (unsigned j = i; j < input.size(); j++)
@@ -88,9 +101,11 @@ void vectorContainer :: parse()
 			return;
 		}
 	}
-	//cout << input << endl;	
-				 
-    }// add another if for () <--------------------------------
+    }
+	if(parenCounter != 0 ){
+		cout << "parenthesis error" << endl;
+		return;
+	}
     
     char* cstrInput = (char*)input.c_str(); //convert input into a cstring
     
@@ -98,12 +113,12 @@ void vectorContainer :: parse()
     
     while(token != NULL){
         //cout << token << endl;
-        argumentList.push_back(new argument(token));
+        argumentList.push_back(new argument(token)); //separates just by connectors
         token = strtok(NULL, ";|&()#");
     }
     
     for(unsigned i = 0; i < argumentList.size(); i++){
-        argumentList.at(i) -> secondParse();
+        argumentList.at(i) -> secondParse();//second parse splits up each command and arguemnt group by spaces
     }
 }
         

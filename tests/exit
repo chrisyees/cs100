@@ -1,0 +1,12 @@
+
+
+echo ls || exit
+
+(echo a && echo b) && exit
+
+exit && echo a
+
+echo a && exit
+
+echo a || exit
+

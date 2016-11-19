@@ -1,0 +1,12 @@
+echo "Flag tests "
+test -e ../bin && echo exists
+test -f ../bin && echo is file
+test -d ../bin && echo is dir
+
+echo "Testing with []"
+[-e ../bin] && echo exists
+[-f ../bin/rshell] && echo is file
+[-d ../bin] && echo is dir
+~
+~
+

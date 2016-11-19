@@ -1,0 +1,8 @@
+ls -a; echo hello; mkdir test
+ls -a && echo hello || mkdir test
+
+echo hello || echo hi || echo bonjour
+echo hello || ls -a; echo hi
+~
+~
+
