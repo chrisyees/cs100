@@ -14,6 +14,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <vector>
+#include <unistd.h>
+
 using namespace std;
 
         
@@ -68,7 +70,26 @@ void vectorContainer :: parse()
         {
             connectorList.push_back(new connector("||"));
             i++;
-        } 
+        }
+	else if (input[i] == '[')
+	{
+		for (unsigned j = i; j < input.size(); j++)
+		{
+			if(input[j] == ']')
+			{
+					input.replace(j,1,"");
+					input.replace(i,1," test ");
+					break;
+			}
+		}
+		if(input[i] == '[')
+		{
+			cout << "Incomplete command" << endl;
+			return;
+		}
+	}
+	//cout << input << endl;	
+				 
     }// add another if for () <--------------------------------
     
     char* cstrInput = (char*)input.c_str(); //convert input into a cstring
@@ -95,8 +116,6 @@ rshell* vectorContainer :: conAt(int i)
 {
     return connectorList.at(i); //returns connector at a location
 } 
-
-        //returns the command at a location
         
 void vectorContainer :: execute()
 {
@@ -126,7 +145,6 @@ void vectorContainer :: execute()
             else if(connectorList.at(conCounter) -> myName() == "&&") // && connector
             {
                 if(!(argumentList.at(i - 1) -> myExecute())){
-                    cout << "oh no" << endl;
                     isGood = false;
                 }
             }
@@ -152,13 +170,63 @@ void vectorContainer :: execute()
             }
             else 
             {
-                if(isGood){ //if connector allows it
-                    if(execvp((argumentList.at(i) -> myArgs())[0],argumentList.at(i) -> myArgs()) == -1)
-                    {
-                        perror("command execution failed"); //error with command
+		if(strcmp(argumentList.at(i) -> myArgs()[0], "test")== 0){
+			struct stat s;
+			if(strcmp(argumentList.at(i) -> myArgs()[1], "-e") == 0){
+				if(stat(argumentList.at(i) -> myArgs()[2],&s) == 0){
+					cout << "(True)" <<endl;
+					argumentList.at(i) -> isExecute();
+				}
+				else
+				{
+					cout << "(False)" << endl;
+				}
+				_exit(0);
+			}
+			else if(strcmp(argumentList.at(i) -> myArgs()[1], "-f") == 0)
+			{
+				if(stat(argumentList.at(i) -> myArgs()[2],&s)==0 && S_ISREG(s.st_mode) != 0){
+					cout << "(True)" << endl;
+					argumentList.at(i) -> isExecute();
+				}
+				else
+				{
+					cout << "(False)" << endl;
+				}
+				_exit(0);
+			}
+			else if(strcmp(argumentList.at(i) -> myArgs()[1], "-d") == 0)
+			{
+				if(stat(argumentList.at(i) -> myArgs()[2],&s)==0 && S_ISDIR(s.st_mode) != 0){
+                                        cout << "(True)" << endl;
+                                        argumentList.at(i) -> isExecute();
+                                }
+                                else
+                                {
+                                        cout << "(False)" << endl;
+                                }
+                                _exit(0);
+
+			}
+			else{
+				if(stat(argumentList.at(i) -> myArgs()[1],&s) == 0){
+                                        cout << "(True)" <<endl;
+                                        argumentList.at(i) -> isExecute();
+                                }
+                                else
+                                {
+                                        cout << "(False)" << endl;
+                                }
+                                _exit(0);
+
+			}
+		}
+		else if(execvp((argumentList.at(i) -> myArgs())[0],argumentList.at(i) -> myArgs()) == -1)
+                {
+                	perror("command execution failed"); //error with command
                         _exit(0);
-                    }
                 }
+              
             }
         }
     }
