@@ -1,8 +1,13 @@
 cd
 cd - 
 cd && echo a
-cd - && echo a
-cd || echo a
-cd - || echo a
+cd - && echo b
+cd || echo c
+cd - || echo d
 cd hello
-
+cd hello && echo e
+cd 
+cd rshell/src
+cd rshell/src && echo a
+cd -
+cd -
