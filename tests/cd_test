@@ -1,0 +1,8 @@
+cd
+cd - 
+cd && echo a
+cd - && echo a
+cd || echo a
+cd - || echo a
+cd hello
+
