@@ -18,7 +18,7 @@ int main()
     //while(!isQuit){
         cout << "$ ";
         getline(cin, input);
-        if(input == "quit"){
+        if(input == "exit"){
             isQuit = true;
         }
         else if(input.length() == 0){
