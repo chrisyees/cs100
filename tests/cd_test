@@ -11,3 +11,6 @@ cd rshell/src
 cd rshell/src && echo a
 cd -
 cd -
+cd ..
+echo a && cd
+exit

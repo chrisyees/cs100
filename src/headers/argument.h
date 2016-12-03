@@ -15,6 +15,7 @@ public:
 	virtual string myName();
 	void add_element(char* x);
 	void secondParse();
+	virtual int myCounter();
 	virtual char** myArgs();
 private:
 	char* myArg;

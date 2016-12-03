@@ -42,6 +42,7 @@ void argument :: secondParse()
         add_element(token);
         // args[counter] = token;
         // counter++;
+        // 
         token = strtok(NULL, " ");
     }
     token = '\0';
@@ -51,4 +52,8 @@ void argument :: secondParse()
 char** argument :: myArgs()
 {
     return args;
+}
+int argument :: myCounter()
+{	
+	return counter;
 }

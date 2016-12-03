@@ -14,6 +14,6 @@ class rshell{
         virtual string myName() = 0;
         virtual void secondParse() = 0;
         virtual char** myArgs() = 0;
-        
+        virtual int myCounter() = 0;
 };
 #endif

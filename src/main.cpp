@@ -16,6 +16,7 @@ int main()
     bool isQuit = false;
     do{
     //while(!isQuit){
+    	cout << getenv("PWD") << " ";
         cout << "$ ";
         getline(cin, input);
         if(input == "exit"){

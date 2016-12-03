@@ -18,6 +18,7 @@ public:
 	void setIndex(int x);
 	int myIndex();
 	virtual char** myArgs(){return NULL;};
+	virtual int myCounter(){return 0;};
 private:
 	string myCon;
 	bool isExecuted;

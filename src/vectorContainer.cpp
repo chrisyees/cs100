@@ -169,8 +169,73 @@ void vectorContainer :: execute()
             }
             conCounter++;
         }
-        if(isGood){
-            pid_t pid = fork();
+        if(isGood){	
+	if(strcmp(argumentList.at(i) -> myArgs()[0], "cd") == 0){
+			//cout << getenv("PWD") << " ";
+			//cout << getenv("OLDPWD") << " ";
+			//cout << getenv("HOME") << endl;
+			//cout << argumentList.at(i) -> myCounter() << endl;
+			if(argumentList.at(i) -> myCounter() == 2){ //just cd
+				
+				if(setenv("OLDPWD", getenv("PWD"),1) == -1){
+					perror("OLDPWD error");
+					return;
+				}
+				
+				if(chdir(getenv("HOME")) == -1){
+					perror("chdir error");
+					return;
+				}
+				
+				if(setenv("PWD", getenv("HOME"), 1) == -1){
+					perror("setenv error");
+					return;
+				}
+			argumentList.at(i) -> isExecute();
+			return;	
+			}
+			else if(argumentList.at(i) -> myCounter() == 3){ //cd and something else
+ 				if(strcmp(argumentList.at(i) -> myArgs()[1], "-") == 0){
+					char* tempEnv = getenv("PWD");
+					if(setenv("PWD", getenv("OLDPWD"),1) == -1){
+						perror("PWD error");
+						return;
+					}
+					if(chdir(getenv("OLDPWD")) == -1){
+						cout << "hi" << endl;
+						perror("chdir error");
+						return;
+					}
+					if(setenv("OLDPWD",tempEnv,1) == -1){
+						perror("setenv error");
+						return;
+					}
+				}
+				else{
+					if(setenv("OLDPWD", getenv("PWD"),1) == -1){
+						perror("setenv error");
+						return;
+					}
+					if(chdir(argumentList.at(i) -> myArgs()[1]) == -1 || strcmp(argumentList.at(i) -> myArgs()[1],".") == 0 || strcmp(argumentList.at(i) -> myArgs()[1], "..") == 0){
+						perror("chdir error");
+						return;
+					}
+					char buffer[257];
+					if(setenv("PWD", getcwd(buffer,256),1) == -1){
+						perror("setenv error");
+						return;
+					}
+				}
+			argumentList.at(i) -> isExecute();
+			return;
+			}
+			else{
+				cout << "Too many arguments" << endl;
+				return;
+			}
+		return;
+		}	  
+		  pid_t pid = fork();
 
             if (pid == -1) //forking has an issue
             {

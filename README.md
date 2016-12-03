@@ -34,3 +34,4 @@ class and store it in a vector of rshell type. Execution occurs in vectorContain
 
 Bugs:
 -----
+Scripts make an infinite loop if not ended with "exit". Must be used manually.
